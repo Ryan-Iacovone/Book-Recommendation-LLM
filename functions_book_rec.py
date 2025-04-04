@@ -13,7 +13,7 @@ from filelock import FileLock, Timeout
 
 # LLM that provides a list of book reccomendations (title only) in the format of a python list
 def input_llm(orig_prompt):
-    model = "llama3" # mistral, llama2, kdl_copilot_llama3, llama3, llama2:13b
+    model = "llama3.1" # mistral, llama2, kdl_copilot_llama3, llama3, llama2:13b
     llm = Ollama(model=model, format='json') # how to structure LLM output: https://python.langchain.com/v0.2/docs/how_to/structured_output/
 
     system = """Your are a helpful librarian AI assistant. You provide relevant book recommendations based on the context of the users input. \
@@ -86,7 +86,7 @@ def get_author(titles):
     return master_dict
 
 # Loading in the KDL database we're going to compare our LLM reccomendation output against 
-monster = pd.read_excel(r'C:\Users\Ryan\Coding Projects\KDL Project\AI PT\LLM book rec\Book db\kdl_report_edited.xlsx')
+monster = pd.read_excel(r'C:\Users\Ryan\Coding Projects\KDL Project\AI PT\Book Rec LLM\Book db\kdl_report_edited.xlsx')
 
 
 def match_recs(master_dict):
@@ -125,7 +125,7 @@ def match_recs(master_dict):
 
 # For books that are in KDL's database (AKA have am index present in book_recs df) this LLM recommends them in relation to the original question! 
 def output_llm(llm_data, orig_prompt):
-    model = "llama3" # mistral, llama2, kdl_copilot_llama3, llama3, llama2:13b
+    model = "llama3.1" # mistral, llama2, kdl_copilot_llama3, llama3, llama2:13b
     llm = Ollama(model=model, temperature=0)
 
     system2 = """Your are a helpful librarian AI assistant. You know a lot about books and have great recommendation advice . \
@@ -151,7 +151,7 @@ def output_llm(llm_data, orig_prompt):
 # Function to save the updated address database
 def resave_json(dict):
     # Loading in the Address DB, appending the current address results, and then resaves it 
-    save_folder = r"C:\Users\Ryan\Coding Projects\KDL Project\AI PT\LLM book rec\outputs"
+    save_folder = r"C:\Users\Ryan\Coding Projects\KDL Project\AI PT\Book Rec LLM\outputs"
     file_path = os.path.join(save_folder, 'LLM_Recs_db.json')
     lock_file_path = file_path + '.lock'
 
